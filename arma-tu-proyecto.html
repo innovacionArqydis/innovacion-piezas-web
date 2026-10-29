@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Arma tu proyecto</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@600;800&family=Roboto+Mono:wght@500&family=Roboto:wght@400;500;700&display=swap">
+<style>
+:root { --paper:#EDE6DC; --sheet:#F7F3EE; --ink:#1F3547; --slate:#63779A; --muted:#4A5A6A; --sky:#A9C4D6; --rule:rgba(31,53,71,.14);
+  --fd:"Roboto Condensed","Arial Narrow",Arial,sans-serif; --fb:"Roboto",system-ui,sans-serif; --fm:"Roboto Mono",Consolas,monospace; }
+* { box-sizing:border-box; }
+body { margin:0; padding:4px; background:transparent; color:var(--ink); font:16px/1.5 var(--fb); }
+.quiz { display:grid; grid-template-columns:1.1fr .9fr; gap:24px; align-items:start; }
+.card { background:var(--paper); border:1px solid var(--rule); border-radius:18px; padding:24px; min-width:0; }
+.q { border:0; margin:0 0 22px; padding:0; display:grid; gap:10px; }
+.q legend { display:flex; align-items:baseline; gap:10px; font:600 21px var(--fd); text-transform:uppercase; padding:0; margin-bottom:10px; }
+.q legend i { font:500 13px var(--fm); font-style:normal; color:var(--slate); }
+.q legend small { font:400 13px var(--fb); text-transform:none; color:var(--muted); }
+.seg { display:flex; flex-wrap:wrap; gap:8px; }
+.seg label { position:relative; }
+.seg input { position:absolute; opacity:0; inset:0; margin:0; }
+.seg span { display:inline-block; padding:9px 15px; border:2px solid var(--rule); border-radius:999px; font-weight:500; font-size:15px; cursor:pointer; background:#fff; }
+.seg input:checked + span { border-color:var(--ink); background:var(--ink); color:#fff; }
+.seg input:focus-visible + span { outline:3px solid var(--sky); outline-offset:2px; }
+.row2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.sub { font-size:14px; font-weight:700; color:var(--muted); }
+.range-row { display:flex; align-items:center; gap:14px; }
+.range-row input { flex:1; accent-color:var(--ink); min-width:0; }
+.range-row output { font:500 19px var(--fm); min-width:80px; text-align:right; }
+.check { display:flex; align-items:center; gap:10px; font-size:15px; }
+.check input { width:18px; height:18px; accent-color:var(--ink); }
+.text-in { width:100%; min-height:46px; border:2px solid var(--rule); border-radius:12px; background:#fff; color:var(--ink); padding:0 14px; font:16px var(--fb); }
+.summary { background:var(--ink); color:#fff; border-color:transparent; display:grid; gap:14px; position:sticky; top:4px; }
+.eyebrow { font:500 13px var(--fm); letter-spacing:2px; text-transform:uppercase; color:var(--sky); margin:0; }
+.summary h3 { margin:0; font:800 30px/1 var(--fd); text-transform:uppercase; }
+.summary dl { margin:0; display:grid; grid-template-columns:auto 1fr; gap:10px 16px; }
+.summary dt { font:500 12px var(--fm); color:var(--sky); text-transform:uppercase; letter-spacing:1px; padding-top:3px; }
+.summary dd { margin:0; font-weight:500; }
+.btn { display:inline-flex; align-items:center; justify-content:center; gap:10px; min-height:52px; padding:0 22px; border-radius:999px; font:700 16px var(--fb); text-decoration:none; background:var(--paper); color:var(--ink); }
+.btn svg { width:22px; height:22px; }
+small { color:var(--sky); font-size:13px; }
+@media (max-width:760px) { .quiz { grid-template-columns:1fr; } .summary { position:static; } .row2 { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<form class="quiz" id="quiz" novalidate>
+  <div class="card">
+    <fieldset class="q"><legend><i>01</i>¿En qué etapa estás?</legend>
+      <div class="seg">
+        <label><input type="radio" name="etapa" value="Ya tengo terreno" checked><span>Ya tengo terreno</span></label>
+        <label><input type="radio" name="etapa" value="Ya tengo planos"><span>Ya tengo planos</span></label>
+        <label><input type="radio" name="etapa" value="Estoy buscando terreno"><span>Estoy buscando terreno</span></label>
+        <label><input type="radio" name="etapa" value="Apenas lo estoy planeando"><span>Apenas lo estoy planeando</span></label>
+      </div></fieldset>
+    <fieldset class="q"><legend><i>02</i>¿Qué quieres construir?</legend>
+      <div class="seg">
+        <label><input type="radio" name="tipo" value="Casa nueva" checked><span>Casa nueva</span></label>
+        <label><input type="radio" name="tipo" value="Ampliación"><span>Ampliación</span></label>
+        <label><input type="radio" name="tipo" value="Remodelación"><span>Remodelación</span></label>
+        <label><input type="radio" name="tipo" value="Local o comercio"><span>Local o comercio</span></label>
+      </div></fieldset>
+    <fieldset class="q"><legend><i>03</i>Tamaño aproximado <small>(no tiene que ser exacto)</small></legend>
+      <div class="range-row"><input type="range" id="m2" min="40" max="400" step="5" value="160" aria-label="Metros cuadrados aproximados"><output id="m2o" for="m2">160 m²</output></div>
+      <label class="check"><input type="checkbox" id="m2no"> Todavía no lo sé</label>
+      <div class="row2">
+        <div style="display:grid;gap:8px"><span class="sub">Niveles</span><div class="seg">
+          <label><input type="radio" name="niv" value="1"><span>1</span></label>
+          <label><input type="radio" name="niv" value="2" checked><span>2</span></label>
+          <label><input type="radio" name="niv" value="3"><span>3</span></label></div></div>
+        <div style="display:grid;gap:8px"><span class="sub">Recámaras</span><div class="seg">
+          <label><input type="radio" name="rec" value="2"><span>2</span></label>
+          <label><input type="radio" name="rec" value="3" checked><span>3</span></label>
+          <label><input type="radio" name="rec" value="4 o más"><span>4+</span></label></div></div>
+      </div></fieldset>
+    <fieldset class="q"><legend><i>04</i>¿Cuándo te gustaría empezar?</legend>
+      <div class="seg">
+        <label><input type="radio" name="cuando" value="Lo antes posible"><span>Lo antes posible</span></label>
+        <label><input type="radio" name="cuando" value="En 3 a 6 meses" checked><span>En 3 a 6 meses</span></label>
+        <label><input type="radio" name="cuando" value="En más de 6 meses"><span>En más de 6 meses</span></label>
+        <label><input type="radio" name="cuando" value="Solo estoy explorando"><span>Solo estoy explorando</span></label>
+      </div></fieldset>
+    <fieldset class="q"><legend><i>+</i>Opcional</legend>
+      <label class="sub" for="zona">Colonia, fraccionamiento o ciudad</label>
+      <input class="text-in" id="zona" type="text" placeholder="Ej. Hacienda El Rincón, Ocotlán" autocomplete="off">
+      <span class="sub">¿Tienes un presupuesto en mente?</span>
+      <div class="seg">
+        <label><input type="radio" name="pres" value="" checked><span>Prefiero platicarlo</span></label>
+        <label><input type="radio" name="pres" value="Hasta $1.5 millones"><span>Hasta $1.5 M</span></label>
+        <label><input type="radio" name="pres" value="$1.5 a $3 millones"><span>$1.5 – 3 M</span></label>
+        <label><input type="radio" name="pres" value="$3 a $5 millones"><span>$3 – 5 M</span></label>
+        <label><input type="radio" name="pres" value="Más de $5 millones"><span>Más de $5 M</span></label>
+      </div></fieldset>
+  </div>
+  <aside class="card summary" aria-live="polite">
+    <p class="eyebrow">Tu resumen</p>
+    <h3 id="s-title">Casa nueva</h3>
+    <dl id="s-list"></dl>
+    <a class="btn" id="send" href="#" target="_blank" rel="noopener"><svg viewBox="-40 -40 80 80" aria-hidden="true"><path d="M-22,24 L-28,32 L-17,28 A30,30 0 1 0 -22,24 Z" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"/><path d="M-11,-14 C-15,-8 -12,2 -4,9 C4,16 13,18 17,13 L18,8 L10,3 L6,7 C2,5 -3,0 -5,-4 L-1,-8 L-6,-16 Z" fill="currentColor"/></svg>Enviar mi proyecto por WhatsApp</a>
+    <small>Te respondemos con los siguientes pasos y, si quieres, agendamos una visita a tu terreno. El presupuesto lo hacemos a la medida de tu proyecto.</small>
+  </aside>
+</form>
+<script>
+(() => {
+  const PHONE = "523111455359";
+  const $ = (id) => document.getElementById(id);
+  const val = (n) => (document.querySelector(`input[name=${n}]:checked`) || {}).value || "";
+  function update() {
+    const no = $("m2no").checked; $("m2").disabled = no;
+    $("m2o").textContent = no ? "—" : `${$("m2").value} m²`;
+    const niv = val("niv"), zona = $("zona").value.trim(), pres = val("pres");
+    const rows = [["Etapa", val("etapa")], ["Proyecto", val("tipo")],
+      ["Tamaño", `${no ? "Por definir" : $("m2").value + " m² aprox."} · ${niv} ${niv === "1" ? "nivel" : "niveles"} · ${val("rec")} recámaras`],
+      ["Inicio", val("cuando")]];
+    if (zona) rows.push(["Zona", zona]);
+    rows.push(["Presupuesto", pres || "Prefiero platicarlo"]);
+    $("s-title").textContent = val("tipo");
+    const dl = $("s-list"); dl.textContent = "";
+    rows.forEach(([k, v]) => { const dt = document.createElement("dt"), dd = document.createElement("dd"); dt.textContent = k; dd.textContent = v; dl.append(dt, dd); });
+    const msg = ["Hola, quiero platicar de mi proyecto:", ...rows.map(([k, v]) => `• ${k}: ${v}`), "¿Me pueden asesorar?"].join("\n");
+    $("send").href = `https://wa.me/${PHONE}?text=${encodeURIComponent(msg)}`;
+  }
+  $("quiz").addEventListener("input", update);
+  $("quiz").addEventListener("change", update);
+  $("quiz").addEventListener("submit", (e) => e.preventDefault());
+  update();
+})();
+</script>
+</body>
+</html>

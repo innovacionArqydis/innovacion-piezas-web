@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Casas en venta</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@800&family=Roboto+Mono:wght@500&family=Roboto:wght@400;500;700&display=swap">
+<style>
+:root { --fondo:#F0F0F0; --card:#FFFFFF; --ink:#1F3547; --slate:#63779A; --muted:#4A5A6A; --sky:#A9C4D6; --glass:#DDEFFB; --rule:rgba(31,53,71,.14);
+  --fd:"Roboto Condensed","Arial Narrow",Arial,sans-serif; --fb:"Roboto",system-ui,sans-serif; --fm:"Roboto Mono",Consolas,monospace; }
+* { box-sizing:border-box; }
+html, body { height:100%; }
+body { margin:0; background:var(--fondo); color:var(--ink); font:16px/1.5 var(--fb); }
+.wrap { max-width:1120px; margin:0 auto; padding:12px 16px; }
+.card { background:var(--card); border:1px solid var(--rule); border-radius:18px; overflow:hidden; display:grid; grid-template-columns:1.15fr .85fr; }
+.gal { padding:10px; display:grid; gap:8px; min-width:0; }
+.main { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden; background:var(--glass); }
+.main img { width:100%; height:100%; object-fit:cover; display:block; transition:opacity .25s ease; }
+.cap { position:absolute; left:10px; bottom:10px; background:rgba(20,33,44,.8); color:#fff; font:500 12px var(--fm); padding:5px 9px; border-radius:6px; }
+.thumbs { display:flex; gap:8px; overflow-x:auto; padding-bottom:2px; }
+.thumbs button { flex:none; width:64px; height:64px; padding:0; border:2px solid transparent; border-radius:8px; overflow:hidden; cursor:pointer; background:var(--glass); }
+.thumbs button[aria-pressed="true"] { border-color:var(--ink); }
+.thumbs img { width:100%; height:100%; object-fit:cover; display:block; }
+.body { padding:24px; display:grid; gap:12px; align-content:start; min-width:0; }
+.badge { justify-self:start; background:var(--ink); color:#fff; font:500 12px var(--fm); letter-spacing:1.5px; padding:6px 10px; border-radius:6px; text-transform:uppercase; }
+.badge.apartada { background:#8A5A00; }
+.where { margin:0; font:500 13px var(--fm); letter-spacing:1.5px; text-transform:uppercase; color:var(--slate); }
+h2 { margin:0; font:800 clamp(28px,4vw,40px)/1 var(--fd); text-transform:uppercase; }
+.price { margin:0; font:800 28px var(--fd); }
+.price.ask { font:500 16px var(--fb); color:var(--muted); }
+.spec { display:grid; grid-template-columns:1fr 1fr; gap:12px 10px; border-top:1px solid var(--rule); padding-top:12px; }
+.spec div { font-size:13px; color:var(--muted); }
+.spec b { display:block; font:500 18px var(--fm); color:var(--ink); }
+.desc { margin:0; color:var(--muted); font-size:15px; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+.feats { margin:0; padding:0; list-style:none; display:grid; gap:4px; font-size:14px; color:var(--muted); }
+.feats li::before { content:"✓ "; color:var(--slate); }
+.btns { display:flex; flex-wrap:wrap; gap:10px; }
+.btn { display:inline-flex; align-items:center; gap:8px; min-height:46px; padding:0 18px; border-radius:999px; font:700 15px var(--fb); text-decoration:none; border:2px solid var(--ink); color:var(--ink); background:transparent; }
+.btn.primary { background:var(--ink); color:#fff; }
+.btn svg { width:20px; height:20px; }
+.nav { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:12px; }
+.nav[hidden] { display:none; }
+.nav button { border:2px solid var(--ink); background:var(--card); color:var(--ink); border-radius:999px; min-height:42px; padding:0 16px; font:700 14px var(--fb); cursor:pointer; }
+.nav button:disabled { opacity:.35; cursor:default; }
+.nav span { font:500 13px var(--fm); color:var(--muted); }
+.empty { background:var(--card); border:2px dashed var(--rule); border-radius:18px; padding:32px 24px; text-align:center; color:var(--muted); display:grid; gap:12px; justify-items:center; }
+.empty h2 { color:var(--ink); }
+:focus-visible { outline:3px solid var(--sky); outline-offset:2px; }
+@media (max-width:760px) {
+  .card { grid-template-columns:1fr; }
+  .body { padding:18px; }
+  .thumbs button { width:54px; height:54px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div id="app" aria-live="polite"><div class="empty"><p>Cargando casas en venta…</p></div></div>
+  <div class="nav" id="nav" hidden>
+    <button type="button" id="prev">← Anterior</button>
+    <span id="count"></span>
+    <button type="button" id="next">Siguiente →</button>
+  </div>
+</div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="wa" viewBox="-40 -40 80 80"><path d="M-22,24 L-28,32 L-17,28 A30,30 0 1 0 -22,24 Z" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"/><path d="M-11,-14 C-15,-8 -12,2 -4,9 C4,16 13,18 17,13 L18,8 L10,3 L6,7 C2,5 -3,0 -5,-4 L-1,-8 L-6,-16 Z" fill="currentColor"/></symbol></svg>
+<script>
+(() => {
+  const TELEFONO = "523111455359";
+  const app = document.getElementById("app"), nav = document.getElementById("nav");
+  let casas = [], actual = 0, recibido = false;
+
+  const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  // Convierte las imágenes de la base de datos de Wix (wix:image://v1/...) en direcciones web
+  const img = (src, w = 1200) => {
+    if (!src) return "";
+    const m = String(src).match(/^wix:image:\/\/v1\/([^/]+)\//);
+    if (m) return `https://static.wixstatic.com/media/${m[1]}/v1/fit/w_${w},h_${w},q_85/foto.${m[1].split(".").pop()}`;
+    return src;
+  };
+  const wa = (msg) => `https://wa.me/${TELEFONO}?text=${encodeURIComponent(msg)}`;
+  const precio = (n) => (typeof n === "number" && n > 0 ? "$" + n.toLocaleString("es-MX") + " MXN" : "");
+
+  function render() {
+    if (!casas.length) {
+      nav.hidden = true;
+      app.innerHTML = `<div class="empty"><h2>Pronto tendremos casas en venta</h2><p>Avísanos qué buscas y te contamos primero de nuestras próximas casas.</p><a class="btn primary" target="_blank" rel="noopener" href="${wa("Hola, estoy buscando casa. Me gustaría que me avisen de sus próximas casas en venta.")}"><svg aria-hidden="true"><use href="#wa"/></svg>Avísame de nuevas casas</a></div>`;
+      return;
+    }
+    const c = casas[actual];
+    const fotos = (Array.isArray(c.galeria) && c.galeria.length ? c.galeria : [{ src: c.fotoPrincipal, title: "Fachada" }]).filter((f) => f && f.src);
+    const estado = (c.estado || "En venta").trim();
+    const p = precio(c.precio);
+    const ficha = [
+      c.terrenoM2 ? [`${c.terrenoM2} m²`, `terreno${c.medidasTerreno ? " de " + c.medidasTerreno : ""}`] : null,
+      c.construccionM2 ? [`${c.construccionM2} m²`, "de construcción"] : null,
+      c.recamaras ? [c.recamaras, "recámaras"] : null,
+      c.banos ? [c.banos, "baños"] : null,
+      c.estacionamiento ? [`${c.estacionamiento} autos`, "en cochera"] : null,
+    ].filter(Boolean);
+    const caracteristicas = String(c.caracteristicas || "").split(/\n+/).map((s) => s.trim()).filter(Boolean).slice(0, 5);
+    app.innerHTML = `
+      <article class="card">
+        <div class="gal">
+          <div class="main"><img id="foto" src="${esc(img(fotos[0]?.src))}" alt="${esc(c.title)}: ${esc(fotos[0]?.title || "foto")}"><span class="cap" id="cap">${esc(fotos[0]?.title || "")}</span></div>
+          ${fotos.length > 1 ? `<div class="thumbs" id="thumbs">${fotos.map((f, i) => `<button type="button" aria-pressed="${i === 0}" aria-label="${esc(f.title || "Foto " + (i + 1))}" data-i="${i}"><img src="${esc(img(f.src, 200))}" alt=""></button>`).join("")}</div>` : ""}
+        </div>
+        <div class="body">
+          <span class="badge ${estado.toLowerCase() === "apartada" ? "apartada" : ""}">${esc(estado)}</span>
+          ${c.ubicacion ? `<p class="where">${esc(c.ubicacion)}</p>` : ""}
+          <h2>${esc(c.title)}</h2>
+          ${p ? `<p class="price">${p}</p>` : `<p class="price ask">Precio a consultar</p>`}
+          ${ficha.length ? `<div class="spec">${ficha.map(([b, t]) => `<div><b>${esc(b)}</b>${esc(t)}</div>`).join("")}</div>` : ""}
+          ${c.descripcion ? `<p class="desc">${esc(c.descripcion)}</p>` : ""}
+          ${caracteristicas.length ? `<ul class="feats">${caracteristicas.map((f) => `<li>${esc(f)}</li>`).join("")}</ul>` : ""}
+          <div class="btns">
+            <a class="btn primary" target="_blank" rel="noopener" href="${wa(`Hola, me interesa la ${c.title}. ¿Me pueden dar informes y el precio?`)}"><svg aria-hidden="true"><use href="#wa"/></svg>Pedir informes</a>
+            <a class="btn" target="_blank" rel="noopener" href="${wa(`Hola, me gustaría agendar una visita a la ${c.title}.`)}">Agendar visita</a>
+          </div>
+        </div>
+      </article>`;
+    const thumbs = document.getElementById("thumbs");
+    if (thumbs) thumbs.addEventListener("click", (e) => {
+      const b = e.target.closest("button"); if (!b) return;
+      const f = fotos[+b.dataset.i];
+      document.getElementById("foto").src = img(f.src);
+      document.getElementById("foto").alt = `${c.title}: ${f.title || "foto"}`;
+      document.getElementById("cap").textContent = f.title || "";
+      thumbs.querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", x === b));
+    });
+    nav.hidden = casas.length < 2;
+    document.getElementById("count").textContent = `Casa ${actual + 1} de ${casas.length}`;
+    document.getElementById("prev").disabled = actual === 0;
+    document.getElementById("next").disabled = actual === casas.length - 1;
+  }
+  document.getElementById("prev").addEventListener("click", () => { if (actual > 0) { actual--; render(); } });
+  document.getElementById("next").addEventListener("click", () => { if (actual < casas.length - 1) { actual++; render(); } });
+
+  // Recibe las casas que manda el código de la página (Velo)
+  window.addEventListener("message", (e) => {
+    const d = e.data;
+    if (d && d.tipo === "casas" && Array.isArray(d.casas)) { recibido = true; casas = d.casas; actual = 0; render(); }
+  });
+  // Avisa a la página que la tarjeta está lista, y repite el aviso hasta recibir las casas
+  const listo = () => { try { window.parent.postMessage({ tipo: "listo" }, "*"); } catch (_) {} };
+  listo();
+  let intentos = 0;
+  const aviso = setInterval(() => {
+    if (recibido || ++intentos > 40) return clearInterval(aviso);
+    listo();
+  }, 750);
+  // Dentro del editor de Wix el código de la página no corre: lo explicamos en vez de decir que no hay casas
+  setTimeout(() => {
+    if (!recibido) app.innerHTML = `<div class="empty"><p>Las casas en venta se muestran en la vista previa y en el sitio publicado.</p></div>`;
+  }, 8000);
+})();
+</script>
+</body>
+</html>

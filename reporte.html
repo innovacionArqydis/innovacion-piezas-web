@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reporte de obra</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@800&family=Roboto+Mono:wght@500&family=Roboto:wght@400;500;700&display=swap">
+<style>
+:root { --sheet:#F7F3EE; --ink:#1F3547; --slate:#63779A; --muted:#4A5A6A; --glass:#DDEFFB; --rule:rgba(31,53,71,.14);
+  --fd:"Roboto Condensed","Arial Narrow",Arial,sans-serif; --fb:"Roboto",system-ui,sans-serif; --fm:"Roboto Mono",Consolas,monospace; }
+* { box-sizing:border-box; }
+body { margin:0; padding:4px; background:transparent; color:var(--ink); font:16px/1.5 var(--fb); }
+.card { background:var(--sheet); border:1px solid var(--rule); border-radius:18px; padding:24px; }
+.eyebrow { font:500 13px var(--fm); letter-spacing:2px; text-transform:uppercase; color:var(--slate); margin:0; }
+h3 { margin:10px 0 0; font:800 24px/1.1 var(--fd); text-transform:uppercase; }
+.wk { display:flex; align-items:center; gap:14px; margin:14px 0 6px; }
+.wk input { flex:1; accent-color:var(--ink); min-width:0; }
+.wk output { font:500 14px var(--fm); white-space:nowrap; }
+.stage { display:grid; grid-template-columns:1fr auto; gap:6px 12px; padding:12px 0; border-bottom:1px solid var(--rule); font-size:15px; }
+.stage:last-child { border-bottom:0; }
+.b { grid-column:1 / -1; height:6px; background:var(--rule); border-radius:6px; overflow:hidden; }
+.b i { display:block; height:100%; background:var(--ink); transition:width .3s ease; }
+.pill { font:500 12px var(--fm); padding:3px 8px; border-radius:999px; border:1px solid var(--rule); color:var(--muted); }
+.pill.done { background:var(--ink); color:#fff; border-color:var(--ink); }
+.pill.now { background:var(--glass); color:var(--ink); border-color:var(--slate); }
+.total { display:flex; justify-content:space-between; align-items:baseline; margin-top:12px; font:800 30px var(--fd); }
+.total span:first-child { font:500 17px var(--fb); color:var(--muted); }
+.bar { height:6px; background:var(--rule); border-radius:6px; overflow:hidden; margin-top:8px; }
+.bar i { display:block; height:100%; background:var(--ink); transition:width .3s ease; }
+</style>
+</head>
+<body>
+<div class="card">
+  <p class="eyebrow">Ejemplo de reporte</p>
+  <h3>Reporte de obra · <span id="title">Semana 12</span></h3>
+  <div class="wk"><input type="range" id="wk" min="1" max="20" value="12" aria-label="Semana de obra"><output id="wko" for="wk">Semana 12 de 20</output></div>
+  <div id="stages"></div>
+  <div class="total"><span>Avance general</span><span id="total">0%</span></div>
+  <div class="bar"><i id="tbar"></i></div>
+</div>
+<script>
+(() => {
+  const PLAN = [["Cimentación", 1, 4], ["Estructura", 4, 9], ["Muros e instalaciones", 8, 14], ["Acabados", 13, 20]];
+  const $ = (id) => document.getElementById(id);
+  function render() {
+    const w = +$("wk").value; let sum = 0;
+    $("wko").textContent = `Semana ${w} de 20`; $("title").textContent = `Semana ${w}`;
+    $("stages").innerHTML = PLAN.map(([n, a, b]) => {
+      const p = Math.max(0, Math.min(1, (w - a + 1) / (b - a + 1))); sum += p;
+      const [c, t] = p >= 1 ? ["done", "Terminada"] : p > 0 ? ["now", "En proceso"] : ["", "Pendiente"];
+      return `<div class="stage"><span>${n}</span><span class="pill ${c}">${t}</span><div class="b"><i style="width:${Math.round(p * 100)}%"></i></div></div>`;
+    }).join("");
+    const t = Math.round((sum / PLAN.length) * 100);
+    $("total").textContent = t + "%"; $("tbar").style.width = t + "%";
+  }
+  $("wk").addEventListener("input", render); render();
+})();
+</script>
+</body>
+</html>

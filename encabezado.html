@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Encabezado de inicio</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&family=Roboto:wght@500;700&display=swap">
+<style>
+:root { --paper:#F0F0F0; --sheet:#F7F3EE; --ink:#1F3547; --line:#1A4F6E; --slate:#63779A; --muted:#4A5A6A; --sky:#A9C4D6;
+  --fd:"Roboto Condensed","Arial Narrow",Arial,sans-serif; --fb:"Roboto",system-ui,sans-serif; --fm:"Roboto Mono",Consolas,monospace;
+  --ease:cubic-bezier(.16,1,.3,1); }
+* { box-sizing:border-box; }
+html, body { height:100%; }
+body { margin:0; background:var(--paper); color:var(--ink); font:16px/1.5 var(--fb); overflow:hidden; }
+.bar { min-height:100%; max-width:1120px; margin:0 auto; padding:12px 24px; display:flex; align-items:center; }
+
+/* Logo que se dibuja */
+.id { display:flex; align-items:center; flex-wrap:wrap; gap:14px 32px; }
+.brand { display:flex; align-items:center; gap:16px; }
+.brand svg { width:64px; height:auto; flex:none; overflow:visible; }
+.logo-bg { transform-box:fill-box; transform-origin:center; animation:pop .7s var(--ease) both; }
+.logo-stroke { fill:none; stroke:var(--line); stroke-width:8; stroke-dasharray:1; stroke-dashoffset:1; animation:draw 1.3s .35s ease-in-out forwards; }
+.logo-fill { opacity:0; animation:fade .5s 1.35s ease forwards; }
+.word { overflow:hidden; line-height:1.1; }
+.word b, .word small { display:block; transform:translateY(105%); animation:up .7s var(--ease) forwards; }
+.word b { font:700 22px var(--fb); animation-delay:.9s; }
+.word small { font:500 11px var(--fb); letter-spacing:3.5px; color:var(--slate); animation-delay:1.02s; }
+.eyebrow { margin:0; font:500 13px var(--fm); letter-spacing:2px; text-transform:uppercase; color:var(--slate); display:flex; align-items:center; gap:12px; opacity:0; animation:fade .6s 1.2s ease forwards; }
+.eyebrow::after { content:""; height:2px; width:48px; background:var(--slate); }
+
+@keyframes pop { from { opacity:0; transform:scale(.6); } to { opacity:1; transform:none; } }
+@keyframes draw { to { stroke-dashoffset:0; } }
+@keyframes fade { to { opacity:1; } }
+@keyframes up { to { transform:none; } }
+@media (prefers-reduced-motion:reduce) { *, *::before, *::after { animation-duration:.01ms !important; animation-delay:0s !important; } }
+
+@media (max-width:600px) {
+  body { overflow:auto; }
+  .bar { padding:12px 16px; }
+  .eyebrow { font-size:11px; letter-spacing:1.5px; }
+  .eyebrow::after { width:28px; }
+}
+</style>
+</head>
+<body>
+<main class="bar">
+  <div class="id">
+    <div class="brand" aria-label="Innovación Arquitectura Estudio">
+      <svg viewBox="148 140 338 468" aria-hidden="true">
+        <rect class="logo-bg" x="148" y="140" width="338" height="468" rx="55" fill="#63779A"/>
+        <g class="logo-fill">
+          <polygon points="286,215 360,182 360,548 286,548" fill="#fff"/><polygon points="252,300 276,268 276,548 252,548" fill="#DDEFFB"/>
+          <polygon points="276,221 286,215 286,548 276,548" fill="#DDEFFB"/><polygon points="306,395 360,430 360,548 306,548" fill="#DDEFFB"/>
+          <polygon points="199,377 237,352 306,391 306,548 199,548" fill="#fff"/><polygon points="339,456 401,432 434,447 434,548 339,548" fill="#fff"/>
+        </g>
+        <path class="logo-stroke" pathLength="1" d="M190,548 L442,548"/>
+        <path class="logo-stroke" pathLength="1" d="M199,548 L199,377 L237,352 L306,391 L306,548"/>
+        <path class="logo-stroke" pathLength="1" d="M237,352 L237,548"/>
+        <path class="logo-stroke" pathLength="1" d="M286,380 L286,215 L360,182 L360,456"/>
+        <path class="logo-stroke" pathLength="1" d="M286,244 L360,244"/>
+        <path class="logo-stroke" pathLength="1" d="M276,374 L276,221 L286,215"/>
+        <path class="logo-stroke" pathLength="1" d="M252,360 L252,300 L276,268"/>
+        <path class="logo-stroke" pathLength="1" d="M339,548 L339,456 L401,432 L434,447 L434,548"/>
+        <path class="logo-stroke" pathLength="1" d="M401,432 L401,548"/>
+      </svg>
+      <div class="word"><b>Innovación</b><small>ARQUITECTURA ESTUDIO</small></div>
+    </div>
+    <p class="eyebrow">Diseño · Construcción · Venta · Ocotlán</p>
+  </div>
+</main>
+</body>
+</html>
