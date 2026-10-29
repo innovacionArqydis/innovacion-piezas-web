@@ -40,13 +40,23 @@ body { margin:0; background:var(--fondo); color:var(--ink); font:16px/1.5 var(--
 </nav>
 <script>
 (() => {
-  // Wix no deja que un bloque «Insertar HTML» cambie de página por sí mismo:
-  // el botón le avisa al código de la página (Velo) a dónde ir, y la página hace el cambio.
+  // 1) El botón le avisa al código de la página (Velo) a dónde ir y la página hace el cambio.
+  // 2) Si la página no contesta (sin código, ID distinto, etc.), el botón abre la página él mismo.
   const SITIO = "https://www.innovacionarquitecturaestudio.com";
+  let pendiente = null;
+  window.addEventListener("message", (e) => {
+    if (e.data && e.data.tipo === "ir-ok") { clearTimeout(pendiente); pendiente = null; }
+  });
+  function abrir(url) {
+    try { window.top.location.href = url; } catch (_) { window.open(url, "_blank", "noopener"); }
+  }
   document.querySelectorAll("[data-destino]").forEach((a) => {
     a.href = SITIO + a.dataset.destino;
+    a.target = "_top";
     a.addEventListener("click", (e) => {
       e.preventDefault();
+      clearTimeout(pendiente);
+      pendiente = setTimeout(() => abrir(a.href), 450);
       try { window.parent.postMessage({ tipo: "ir", destino: a.dataset.destino }, "*"); } catch (_) {}
     });
   });
