@@ -11,5 +11,6 @@ Se publican con GitHub Pages en `https://innovacionarqydis.github.io/innovacion-
 | Cómo trabajamos | `proceso.html` | 420 px | 800 px |
 | Arma tu proyecto | `arma-tu-proyecto.html` | 1000 px | 2200 px |
 | Reporte de obra | `reporte.html` | 470 px | 520 px |
+| Preguntas frecuentes (chat) | `preguntas.html` | 520 px | 700 px |
 
 `velo/casas-en-venta.js` es el código de página (Velo) que manda las casas de la base de datos a `casas.html`.
