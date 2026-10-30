@@ -7,8 +7,8 @@ Se publican con GitHub Pages en `https://innovacionarqydis.github.io/innovacion-
 |---|---|---|---|
 | Encabezado animado | `encabezado.html` | 120 px | 160 px |
 | Dos caminos (botones) | `caminos.html` | 120 px | 280 px |
-| Trayectoria (Nosotros) | `trayectoria.html` | 380 px | 480 px |
-| Ubicación y horario (Nosotros) | `ubicacion.html` | 400 px | 660 px |
+| Trayectoria (Nosotros) | `trayectoria.html` | 380 px | 500 px |
+| Ubicación y horario (Nosotros) | `ubicacion.html` | 400 px | 720 px |
 | Cifras con contador | `cifras.html` | 180 px | 340 px |
 | Tarjeta de casas en venta | `casas.html` | 720 px | 1160 px |
 | Cómo trabajamos | `proceso.html` | 420 px | 800 px |

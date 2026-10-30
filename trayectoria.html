@@ -71,12 +71,25 @@ h2 { margin:4px 0 0; font:800 30px/1.05 var(--fd); text-transform:uppercase; }
   .card h3 { font-size:20px; }
   .card li { font-size:15px; }
 }
+/* Celulares angostos: no caben todos los años, así que solo se ve el del momento elegido (el año grande va en la tarjeta) */
+@media (max-width:420px) {
+  .eyebrow { letter-spacing:1.5px; }
+  .card { min-height:322px; }
+  .stops { padding-bottom:22px; }
+  .stop { position:relative; }
+  .stop .dot { width:20px; height:20px; border-width:2.5px; }
+  .rail, .fill { top:9px; }
+  .stop .lbl { position:absolute; top:28px; left:50%; transform:translateX(-50%); white-space:nowrap; visibility:hidden; }
+  .stop.on .lbl { visibility:visible; }
+  .stop:first-child.on .lbl { left:0; transform:none; }
+  .stop:last-child.on .lbl { left:auto; right:0; transform:none; }
+}
 </style>
 </head>
 <body>
 <main class="wrap">
-  <p class="eyebrow">Trayectoria</p>
-  <h2>Arq. Raúl Alejandro Orozco</h2>
+  <p class="eyebrow">Arq. Raúl Alejandro Orozco</p>
+  <h2>Mi trayectoria</h2>
 
   <div class="track" id="track">
     <div class="rail"></div>
@@ -123,7 +136,8 @@ h2 { margin:4px 0 0; font:800 30px/1.05 var(--fd); text-transform:uppercase; }
   const botones = MOMENTOS.map((m, i) => {
     const b = document.createElement("button");
     b.className = "stop"; b.setAttribute("role", "tab"); b.style.transitionDelay = (0.35 + i * 0.15) + "s";
-    b.innerHTML = '<span class="dot"></span>' + m.anio;
+    b.innerHTML = '<span class="dot"></span><span class="lbl">' + m.anio + "</span>";
+    b.setAttribute("aria-label", m.anio + ": " + m.titulo);
     b.addEventListener("click", () => { detener(); mostrar(i); });
     stops.appendChild(b);
     return b;
