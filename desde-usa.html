@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Construye desde Estados Unidos</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@800&family=Roboto+Mono:wght@500;700&family=Roboto:wght@400;500&display=swap">
+<style>
+:root { --fondo:#F0F0F0; --sheet:#F7F3EE; --ink:#1F3547; --line:#1A4F6E; --slate:#63779A; --muted:#4A5A6A; --sky:#A9C4D6; --rule:#D3D9E0;
+  --fd:"Roboto Condensed","Arial Narrow",Arial,sans-serif; --fb:"Roboto",system-ui,sans-serif; --fm:"Roboto Mono",Consolas,monospace;
+  --ease:cubic-bezier(.16,1,.3,1); }
+* { box-sizing:border-box; }
+html, body { height:100%; }
+body { margin:0; background:var(--fondo); color:var(--ink); font:16px/1.5 var(--fb); overflow:hidden; }
+.wrap { max-width:1040px; margin:0 auto; padding:24px; }
+
+.eyebrow { margin:0; font:500 12px var(--fm); letter-spacing:2.5px; text-transform:uppercase; color:var(--slate); }
+h2 { margin:4px 0 6px; font:800 32px/1.05 var(--fd); text-transform:uppercase; max-width:32ch; }
+.intro { margin:0; color:var(--muted); max-width:60ch; }
+
+/* Ruta Estados Unidos → Ocotlán */
+.ruta { display:grid; grid-template-columns:auto minmax(0,1fr) auto; align-items:center; gap:14px; margin:22px 0 20px; font:700 13px var(--fm); letter-spacing:1px; text-transform:uppercase; }
+.ruta span { display:flex; align-items:center; gap:8px; white-space:nowrap; }
+.ruta span i { width:12px; height:12px; border-radius:50%; border:3px solid var(--ink); background:var(--fondo); }
+.ruta span:last-child i { background:var(--ink); }
+.ruta svg { width:100%; height:auto; max-height:56px; overflow:visible; }
+.arco { fill:none; stroke:var(--slate); stroke-width:2; stroke-dasharray:6 7; stroke-dashoffset:200; opacity:0; transition:opacity .6s ease; }
+.visible .arco { opacity:1; animation:fluye 6s linear infinite; }
+.viajero { opacity:0; }
+.visible .viajero { opacity:1; }
+@keyframes fluye { to { stroke-dashoffset:0; } }
+
+/* Tarjetas que se voltean */
+.grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
+.card { position:relative; height:176px; perspective:900px; border:0; padding:0; background:none; cursor:pointer; text-align:left; font:inherit; color:inherit;
+  opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s var(--ease); }
+.visible .card { opacity:1; transform:none; }
+.inner { position:absolute; inset:0; transition:transform .6s var(--ease); transform-style:preserve-3d; }
+.card.vuelta .inner { transform:rotateY(180deg); }
+.cara { position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden; border-radius:16px; padding:18px 20px; display:grid; align-content:start; gap:6px; }
+.frente { background:var(--sheet); border:1.5px solid var(--rule); transition:border-color .2s ease, box-shadow .2s ease; }
+.card:hover .frente { border-color:var(--slate); box-shadow:0 12px 26px rgba(31,53,71,.12); }
+.reverso { background:var(--ink); color:#fff; transform:rotateY(180deg); align-content:center; padding-bottom:34px; }
+.reverso p { margin:0; font-size:14.5px; line-height:1.45; color:#E6ECF2; }
+.ico { width:38px; height:38px; border-radius:10px; background:var(--fondo); display:grid; place-items:center; margin-bottom:4px; }
+.ico svg { width:22px; height:22px; fill:none; stroke:var(--ink); stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+.card h3 { margin:0; font:800 19px/1.1 var(--fd); text-transform:uppercase; }
+.card .sub { margin:0; font-size:14px; color:var(--muted); }
+.mas { position:absolute; right:16px; bottom:14px; font:500 11px var(--fm); letter-spacing:1px; text-transform:uppercase; color:var(--slate); }
+.reverso .mas { color:var(--sky); }
+.card:focus-visible { outline:3px solid var(--sky); outline-offset:3px; border-radius:16px; }
+
+/* Llamado a la acción */
+.cta { margin-top:18px; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px 20px; padding:16px 20px; border-radius:16px; background:var(--sheet); border:1.5px solid var(--rule); }
+.cta p { margin:0; color:var(--muted); font-size:14px; }
+.cta p b { display:block; color:var(--ink); font:800 18px/1.2 var(--fd); text-transform:uppercase; }
+.tel { font-family:var(--fm); color:var(--ink); white-space:nowrap; }
+.btn { display:inline-flex; align-items:center; gap:8px; padding:12px 20px; border-radius:12px; background:var(--ink); color:#fff; text-decoration:none; font:800 15px var(--fd); text-transform:uppercase; letter-spacing:.5px; transition:transform .2s ease, box-shadow .2s ease; }
+.btn:hover { transform:translateY(-2px); box-shadow:0 12px 24px rgba(31,53,71,.2); }
+.btn:focus-visible { outline:3px solid var(--sky); outline-offset:3px; }
+
+@media (prefers-reduced-motion:reduce) { *, *::before, *::after { transition-duration:.01ms !important; animation:none !important; } .viajero { display:none; } }
+
+@media (max-width:860px) { .grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width:560px) {
+  body { overflow:auto; }
+  .wrap { padding:18px 14px; }
+  h2 { font-size:25px; }
+  .ruta { font-size:11px; gap:8px; letter-spacing:.5px; }
+  .grid { grid-template-columns:minmax(0,1fr); gap:10px; }
+  .card { height:182px; }
+  .reverso p { font-size:14px; }
+  .cta { padding:14px 16px; }
+  .btn { width:100%; justify-content:center; }
+}
+</style>
+</head>
+<body>
+<main class="wrap" id="todo">
+  <p class="eyebrow">¿Vives en Estados Unidos?</p>
+  <h2>Construye tu casa en Ocotlán sin tener que venir</h2>
+  <p class="intro">Muchos de nuestros clientes trabajan del otro lado. Por eso organizamos todo para que puedas construir a distancia, con la tranquilidad de saber cómo va tu casa.</p>
+
+  <div class="ruta" aria-hidden="true">
+    <span><i></i>Estados Unidos</span>
+    <svg viewBox="0 0 400 44">
+      <path id="arco" class="arco" d="M4,38 C120,-8 280,-8 396,38"/>
+      <circle class="viajero" r="5" fill="#1F3547">
+        <animateMotion dur="3.2s" repeatCount="indefinite" keyPoints="0;1" keyTimes="0;1" calcMode="spline" keySplines=".45 0 .55 1"><mpath href="#arco"/></animateMotion>
+      </circle>
+    </svg>
+    <span>Ocotlán, Jal.<i></i></span>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="cta">
+    <p><b>Escríbenos desde Estados Unidos</b>Por WhatsApp, o llama al <span class="tel">011 52 311 145 5359</span></p>
+    <a class="btn" target="_blank" rel="noopener" href="https://wa.me/523111455359?text=Hola%2C%20vivo%20en%20Estados%20Unidos%20y%20quiero%20construir%20mi%20casa%20en%20Ocotl%C3%A1n.">Hablemos por WhatsApp →</a>
+  </div>
+</main>
+<script>
+(() => {
+  const I = {
+    video: '<rect x="2" y="6" width="14" height="12" rx="2"/><path d="M16 10l6-3v10l-6-3"/>',
+    casa:  '<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>',
+    doc:   '<path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5"/><path d="M9 13h8M9 17h5"/>',
+    pago:  '<path d="M4 8h14l-3-3"/><path d="M20 16H6l3 3"/>',
+    foto:  '<rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l2-3h4l2 3"/>',
+    casco: '<path d="M4 16a8 8 0 0116 0"/><path d="M2 16h20v3H2z"/><path d="M12 8v4"/>',
+  };
+  // Para cambiar textos, edita solo esta lista
+  const VENTAJAS = [
+    { ico: "video", titulo: "Sin viajar a cada junta", sub: "Revisamos tu proyecto por videollamada.",
+      detalle: "Hacemos juntas por videollamada para revisar el diseño, resolver tus dudas y ver juntos el avance de la obra." },
+    { ico: "casa", titulo: "Ve tu casa antes de construirla", sub: "Diseño y renders en 3D.",
+      detalle: "Hacemos renders desde 2010: verás tu casa por dentro y por fuera antes de poner el primer block. Cambiar en pantalla cuesta menos que cambiar en obra." },
+    { ico: "doc", titulo: "Nosotros hacemos los trámites", sub: "Con una carta poder, gestionamos por ti.",
+      detalle: "Con una carta poder firmada por ti, nos encargamos de los permisos y trámites en Ocotlán, sin que tengas que estar aquí." },
+    { ico: "pago", titulo: "Pagas desde Estados Unidos", sub: "Transferencias y pagos por etapas.",
+      detalle: "Recibimos transferencias desde Estados Unidos y pagas conforme avanza la obra, por etapas. Así sabes en qué se invierte cada pago." },
+    { ico: "foto", titulo: "Ves el avance cada semana", sub: "Reporte semanal con fotos.",
+      detalle: "Cada semana te enviamos un reporte con fotos de lo que se hizo y lo que sigue. Aunque estés lejos, sabes cómo va tu casa." },
+    { ico: "casco", titulo: "Un equipo aquí en Ocotlán", sub: "Supervisamos tu obra de cerca.",
+      detalle: "Nuestro equipo está en Ocotlán y cuida tu obra desde el diseño hasta la entrega de llaves. Un solo responsable para todo." },
+  ];
+
+  const grid = document.getElementById("grid");
+  VENTAJAS.forEach((v, i) => {
+    const b = document.createElement("button");
+    b.className = "card"; b.style.transitionDelay = (0.15 + i * 0.08) + "s";
+    b.setAttribute("aria-pressed", "false");
+    b.innerHTML =
+      '<span class="inner">' +
+        '<span class="cara frente"><span class="ico"><svg viewBox="0 0 24 24">' + I[v.ico] + '</svg></span>' +
+          '<h3>' + v.titulo + '</h3><p class="sub">' + v.sub + '</p><span class="mas">Ver cómo +</span></span>' +
+        '<span class="cara reverso"><p>' + v.detalle + '</p><span class="mas">Volver ↺</span></span>' +
+      '</span>';
+    b.addEventListener("click", () => {
+      const vuelta = b.classList.toggle("vuelta");
+      b.setAttribute("aria-pressed", String(vuelta));
+    });
+    // Después de la animación de entrada, el retraso ya no debe frenar el volteo
+    b.addEventListener("transitionend", () => { b.style.transitionDelay = "0s"; }, { once: true });
+    grid.appendChild(b);
+  });
+
+  const todo = document.getElementById("todo");
+  const mostrar = () => todo.classList.add("visible");
+  if ("IntersectionObserver" in window) {
+    const io = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) { mostrar(); io.disconnect(); } }, { threshold: 0.2 });
+    io.observe(todo);
+  } else mostrar();
+})();
+</script>
+</body>
+</html>
