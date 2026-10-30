@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trayectoria</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@800&family=Roboto+Mono:wght@500;700&family=Roboto:wght@400;500&display=swap">
+<style>
+:root { --fondo:#F0F0F0; --sheet:#F7F3EE; --ink:#1F3547; --line:#1A4F6E; --slate:#63779A; --muted:#4A5A6A; --sky:#A9C4D6; --rule:#D3D9E0;
+  --fd:"Roboto Condensed","Arial Narrow",Arial,sans-serif; --fb:"Roboto",system-ui,sans-serif; --fm:"Roboto Mono",Consolas,monospace;
+  --ease:cubic-bezier(.16,1,.3,1); }
+* { box-sizing:border-box; }
+html, body { height:100%; }
+body { margin:0; background:var(--fondo); color:var(--ink); font:16px/1.5 var(--fb); overflow:hidden; }
+.wrap { max-width:1040px; margin:0 auto; padding:24px; }
+
+.eyebrow { margin:0; font:500 12px var(--fm); letter-spacing:2.5px; text-transform:uppercase; color:var(--slate); }
+h2 { margin:4px 0 0; font:800 30px/1.05 var(--fd); text-transform:uppercase; }
+
+/* Línea con paradas */
+.track { position:relative; margin:30px 0 22px; padding:0 22px; }
+.rail, .fill { position:absolute; left:22px; right:22px; top:10px; height:3px; border-radius:3px; }
+.rail { background:var(--rule); transform-origin:left; transform:scaleX(0); transition:transform 1.2s var(--ease); }
+.fill { background:var(--ink); transform-origin:left; transform:scaleX(0); transition:transform .7s var(--ease); }
+.visible .rail { transform:scaleX(1); }
+.stops { position:relative; display:flex; justify-content:space-between; list-style:none; margin:0; padding:0; }
+.stop { display:grid; justify-items:center; gap:8px; background:none; border:0; padding:0; cursor:pointer; color:var(--muted); font:500 13px var(--fm);
+  opacity:0; transform:translateY(8px); transition:opacity .5s ease, transform .5s var(--ease), color .2s ease; }
+.visible .stop { opacity:1; transform:none; }
+.dot { width:23px; height:23px; border-radius:50%; background:var(--fondo); border:3px solid var(--slate); display:grid; place-items:center; transition:transform .25s var(--ease), background .2s ease, border-color .2s ease; }
+.dot::after { content:""; width:7px; height:7px; border-radius:50%; background:var(--slate); transition:background .2s ease; }
+.stop:hover .dot { transform:scale(1.15); }
+.stop.done .dot { border-color:var(--ink); }
+.stop.done .dot::after { background:var(--ink); }
+.stop.on { color:var(--ink); font-weight:700; }
+.stop.on .dot { background:var(--ink); border-color:var(--ink); transform:scale(1.25); }
+.stop.on .dot::after { background:#fff; }
+.stop:focus-visible { outline:3px solid var(--sky); outline-offset:4px; border-radius:6px; }
+
+/* Tarjeta del momento elegido */
+.card { position:relative; background:var(--sheet); border:1.5px solid var(--rule); border-radius:18px; padding:22px 96px 22px 26px; min-height:178px; }
+.contenido { display:grid; grid-template-columns:auto minmax(0,1fr); gap:6px 26px; }
+.year { grid-row:span 3; font:700 54px/1 var(--fm); color:var(--ink); letter-spacing:-1px; }
+.card h3 { margin:0; font:800 22px/1.1 var(--fd); text-transform:uppercase; }
+.card ul { margin:2px 0 0; padding:0; list-style:none; display:grid; gap:6px; }
+.card li { position:relative; padding-left:18px; color:var(--muted); }
+.card li::before { content:""; position:absolute; left:0; top:.6em; width:8px; height:2px; background:var(--slate); }
+.card li b { color:var(--ink); font-weight:500; }
+.anim > * { animation:entra .55s var(--ease) both; }
+.anim > *:nth-child(2) { animation-delay:.06s; }
+.anim > *:nth-child(3) { animation-delay:.12s; }
+@keyframes entra { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
+
+.nav { position:absolute; right:16px; bottom:14px; display:flex; gap:6px; }
+.nav button { width:34px; height:34px; border-radius:50%; border:1.5px solid var(--slate); background:transparent; color:var(--ink); font:16px var(--fb); cursor:pointer; transition:background .2s ease, color .2s ease; }
+.nav button:hover { background:var(--ink); color:#fff; border-color:var(--ink); }
+.nav button:disabled { opacity:.3; cursor:default; background:transparent; color:var(--ink); }
+
+@media (prefers-reduced-motion:reduce) { *, *::before, *::after { transition-duration:.01ms !important; animation-duration:.01ms !important; } }
+
+@media (max-width:600px) {
+  body { overflow:auto; }
+  .wrap { padding:18px 14px; }
+  h2 { font-size:24px; }
+  .track { margin:24px 0 18px; padding:0 12px; }
+  .rail, .fill { left:12px; right:12px; }
+  .stop { font-size:11px; }
+  .card { padding:18px 18px 58px; min-height:302px; }
+  .contenido { grid-template-columns:minmax(0,1fr); }
+  .year { grid-row:auto; font-size:40px; }
+  .card h3 { font-size:20px; }
+  .card li { font-size:15px; }
+}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <p class="eyebrow">Trayectoria</p>
+  <h2>Arq. Raúl Alejandro Orozco</h2>
+
+  <div class="track" id="track">
+    <div class="rail"></div>
+    <div class="fill" id="fill"></div>
+    <div class="stops" id="stops" role="tablist" aria-label="Momentos de la trayectoria"></div>
+  </div>
+
+  <section class="card" id="card" role="tabpanel" aria-live="polite">
+    <div class="nav">
+      <button id="prev" aria-label="Momento anterior">←</button>
+      <button id="next" aria-label="Momento siguiente">→</button>
+    </div>
+    <div class="contenido" id="contenido"></div>
+  </section>
+</main>
+<script>
+(() => {
+  // Para cambiar textos o agregar momentos, edita solo esta lista
+  const MOMENTOS = [
+    { anio: "2008", titulo: "El inicio", hechos: ["Entré a estudiar <b>Arquitectura</b> en el Instituto Tecnológico de Tepic."] },
+    { anio: "2014", titulo: "Arquitecto y fundador", hechos: [
+      "Me titulé como <b>arquitecto</b>.",
+      "Empecé a trabajar en mi primer despacho, donde aprendí el oficio en proyecto y en obra.",
+      "Fundé <b>Innovación Arquitectura Estudio</b> en Ocotlán, Jalisco."] },
+    { anio: "2016", titulo: "Primera obra propia", hechos: ["Construimos nuestra <b>primera obra</b> de principio a fin: del diseño a la entrega de llaves."] },
+    { anio: "2019", titulo: "Un nuevo paso", hechos: [
+      "Llegó nuestro <b>primer proyecto importante</b>.",
+      "Empezamos a construir <b>casas para venta</b>, diseñadas por nosotros."] },
+    { anio: "Hoy", titulo: "Seguimos construyendo", hechos: [
+      "Más de <b>10 años</b> de experiencia profesional.",
+      "<b>55 casas</b> entregadas y <b>5,230 m²</b> construidos."] },
+  ];
+
+  const stops = document.getElementById("stops"), fill = document.getElementById("fill");
+  const contenido = document.getElementById("contenido"), track = document.getElementById("track");
+  const prev = document.getElementById("prev"), next = document.getElementById("next");
+  let actual = 0, auto = null, tocado = false;
+
+  const botones = MOMENTOS.map((m, i) => {
+    const b = document.createElement("button");
+    b.className = "stop"; b.setAttribute("role", "tab"); b.style.transitionDelay = (0.35 + i * 0.15) + "s";
+    b.innerHTML = '<span class="dot"></span>' + m.anio;
+    b.addEventListener("click", () => { detener(); mostrar(i); });
+    stops.appendChild(b);
+    return b;
+  });
+
+  function mostrar(i) {
+    actual = i;
+    const m = MOMENTOS[i];
+    botones.forEach((b, j) => {
+      b.classList.toggle("on", j === i); b.classList.toggle("done", j < i);
+      b.setAttribute("aria-selected", j === i); b.tabIndex = j === i ? 0 : -1;
+    });
+    fill.style.transform = "scaleX(" + (MOMENTOS.length > 1 ? i / (MOMENTOS.length - 1) : 0) + ")";
+    contenido.innerHTML = '<div class="year">' + m.anio + '</div><h3>' + m.titulo + '</h3><ul>' + m.hechos.map((h) => "<li>" + h + "</li>").join("") + "</ul>";
+    contenido.classList.remove("anim"); void contenido.offsetWidth; contenido.classList.add("anim");
+    prev.disabled = i === 0; next.disabled = i === MOMENTOS.length - 1;
+  }
+
+  function detener() { tocado = true; clearInterval(auto); }
+  prev.addEventListener("click", () => { detener(); if (actual > 0) mostrar(actual - 1); });
+  next.addEventListener("click", () => { detener(); if (actual < MOMENTOS.length - 1) mostrar(actual + 1); });
+  stops.addEventListener("keydown", (e) => {
+    const d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+    if (!d) return;
+    detener(); const i = Math.min(MOMENTOS.length - 1, Math.max(0, actual + d)); mostrar(i); botones[i].focus();
+  });
+
+  mostrar(0);
+
+  // Cuando la pieza aparece en pantalla: se dibuja la línea y avanza sola hasta que el visitante toque algo
+  function arrancar() {
+    if (track.classList.contains("visible")) return;
+    track.classList.add("visible");
+    auto = setInterval(() => {
+      if (tocado) return clearInterval(auto);
+      if (actual < MOMENTOS.length - 1) mostrar(actual + 1); else clearInterval(auto);
+    }, 4500);
+  }
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) arrancar(); }, { threshold: 0.35 }).observe(track);
+  } else arrancar();
+})();
+</script>
+</body>
+</html>
