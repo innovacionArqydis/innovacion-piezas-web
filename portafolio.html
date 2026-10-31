@@ -107,7 +107,7 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline:3px solid v
 <body>
 <main class="wrap">
   <ul class="cifras">
-    <li><b>+10</b><span>años de experiencia</span></li>
+    <li><b>12</b><span>años de experiencia</span></li>
     <li><b>55</b><span>casas entregadas</span></li>
     <li><b>5,230 m²</b><span>construidos</span></li>
   </ul>
@@ -147,7 +147,7 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline:3px solid v
   // estado: "Render" o "Obra terminada". Los datos que no se llenen no aparecen en la ficha.
   // comparar (opcional): { render: "id de la imagen", obra: "id de la imagen" } muestra la barra deslizable.
   const PROYECTOS = [
-    { nombre: "Casa La Morena", tipo: "Casas", estado: "Render",
+    { nombre: "Casa La Morena II", tipo: "Casas", estado: "Render",
       lugar: "Coto La Morena, Hacienda El Rincón",
       desc: "Residencia de dos niveles, diseñada y construida por Innovación Arquitectura Estudio.",
       datos: { "Terreno": "144 m² (8 × 18 m)", "Construcción": "249 m²", "Recámaras": "3", "Baños": "2", "Cochera": "2 autos" },
@@ -162,15 +162,18 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline:3px solid v
       ] },
     { nombre: "Edificio comercial", tipo: "Edificios", estado: "Obra terminada",
       fotos: [["f47f29_02a5dc7d372843bcb9146b744b8e8bb1~mv2.jpg", "Fachada"]] },
-    // PENDIENTE: nombre, ubicación, m² y más fotos de los siguientes proyectos
+    // PENDIENTE: nombre, m² y más fotos de los siguientes proyectos
     { nombre: "Casa Hacienda del Rincón", tipo: "Casas", estado: "Render",
-      lugar: "Hacienda del Rincón, Ocotlán", datos: { "Año": "2020" },
+      lugar: "Hacienda El Rincón, Ocotlán", datos: { "Año": "2020" },
       fotos: [["f47f29_c2871fa4cdbf4cfb8d40131d9dfc1817~mv2.jpg", "Fachada"]] },
     { nombre: "Residencia contemporánea", tipo: "Casas", estado: "Render",
+      lugar: "Hacienda El Rincón, Ocotlán",
       fotos: [["f47f29_aee6b16f2cc44ea49110e042407955ce~mv2.jpg", "Fachada"]] },
     { nombre: "Casa 67", tipo: "Casas", estado: "Render",
+      lugar: "Hacienda El Rincón, Ocotlán",
       fotos: [["f47f29_77c2f3e69d9643afbcc0b742de8c9786~mv2.jpg", "Fachada"]] },
-    { nombre: "Casa 55", tipo: "Casas", estado: "Render",
+    { nombre: "Casa La Morena I", tipo: "Casas", estado: "Render",
+      lugar: "Hacienda El Rincón, Ocotlán", datos: { "Terreno": "7 × 18 m", "Construcción": "170 m² aprox." },
       fotos: [["f47f29_ba47001759d54036b2fb21e0be63c3bf~mv2.jpg", "Fachada"]] },
     { nombre: "Edificio de esquina", tipo: "Edificios", estado: "Render",
       fotos: [["f47f29_9354df3bed0940b0b305ad5173daeac9~mv2.jpg", "Fachada de cristal"]] },
@@ -247,9 +250,10 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline:3px solid v
     });
     verFoto(0);
 
+    const alto = document.documentElement.scrollHeight; // se mide antes de mostrar la ficha, que también ocupa alto
     velo.hidden = false; ficha.hidden = false;
     // El bloque de Wix no se desplaza por dentro: la ficha aparece a la altura de la tarjeta tocada, sin salirse de la pieza
-    const alto = document.documentElement.scrollHeight, y = tarjeta.getBoundingClientRect().top + window.scrollY;
+    const y = tarjeta.getBoundingClientRect().top + window.scrollY;
     ficha.style.top = Math.max(8, Math.min(y, alto - ficha.offsetHeight - 8)) + "px";
     $("cerrar").focus({ preventScroll: true });
   }
