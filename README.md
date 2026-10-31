@@ -13,6 +13,7 @@ Se publican con GitHub Pages en `https://innovacionarqydis.github.io/innovacion-
 | Construye desde EE. UU. (Construir con nosotros) | `desde-usa.html` | 780 px | 1720 px |
 | Cifras con contador | `cifras.html` | 180 px | 340 px |
 | Tarjeta de casas en venta | `casas.html` | 720 px | 1160 px |
+| Portafolio (galería y fichas) | `portafolio.html` | 1160 px | 2380 px |
 | Cómo trabajamos | `proceso.html` | 420 px | 800 px |
 | Arma tu proyecto | `arma-tu-proyecto.html` | 1000 px | 2200 px |
 | Reporte de obra | `reporte.html` | 470 px | 520 px |

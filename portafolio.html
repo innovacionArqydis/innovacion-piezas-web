@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portafolio</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@800&family=Roboto+Mono:wght@500;700&family=Roboto:wght@400;500&display=swap">
+<style>
+:root { --fondo:#F0F0F0; --sheet:#F7F3EE; --ink:#1F3547; --line:#1A4F6E; --slate:#63779A; --muted:#4A5A6A; --sky:#A9C4D6; --rule:#D3D9E0;
+  --fd:"Roboto Condensed","Arial Narrow",Arial,sans-serif; --fb:"Roboto",system-ui,sans-serif; --fm:"Roboto Mono",Consolas,monospace;
+  --ease:cubic-bezier(.16,1,.3,1); }
+* { box-sizing:border-box; }
+html, body { min-height:100%; }
+body { position:relative; margin:0; background:var(--fondo); color:var(--ink); font:16px/1.5 var(--fb); overflow-x:hidden; }
+.wrap { max-width:1120px; margin:0 auto; padding:24px; }
+button { font:inherit; color:inherit; }
+button:focus-visible, a:focus-visible, input:focus-visible { outline:3px solid var(--sky); outline-offset:3px; }
+
+/* Cifras */
+.cifras { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin:0 0 22px; padding:0; list-style:none; }
+.cifras li { padding:12px 18px; border-radius:14px; background:var(--sheet); border:1.5px solid var(--rule); }
+.cifras b { display:block; font:800 30px/1.1 var(--fd); }
+.cifras span { font-size:14px; color:var(--muted); }
+
+/* Filtros */
+.filtros { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; }
+.filtros button { padding:8px 16px; border-radius:999px; border:1.5px solid var(--slate); background:var(--sheet); cursor:pointer; font:500 13px var(--fm); letter-spacing:1px; text-transform:uppercase; transition:background .2s ease, color .2s ease, border-color .2s ease; }
+.filtros button:hover { border-color:var(--ink); }
+.filtros button[aria-pressed="true"] { background:var(--ink); border-color:var(--ink); color:#fff; }
+
+/* Tarjetas */
+.grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
+.card { position:relative; display:block; width:100%; height:270px; padding:0; border:0; border-radius:16px; overflow:hidden; background:var(--rule); cursor:pointer; text-align:left; animation:entra .5s var(--ease) backwards; }
+.card.grande { grid-column:span 2; }
+.card img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .6s var(--ease); }
+.card:hover img { transform:scale(1.04); }
+.card.otro { opacity:.35; filter:grayscale(.6); transition:opacity .2s ease; }
+.card.otro:hover { opacity:.8; }
+.card .capa { position:absolute; left:0; right:0; bottom:0; padding:44px 16px 13px; color:#fff; background:linear-gradient(to top, rgba(20,33,44,.86), rgba(20,33,44,0)); }
+.card h3 { margin:0; font:800 21px/1.1 var(--fd); text-transform:uppercase; }
+.card p { margin:2px 0 0; font-size:14px; color:#E6ECF2; }
+.chip { position:absolute; top:12px; left:12px; padding:3px 9px; border-radius:6px; background:rgba(20,33,44,.78); color:#fff; font:500 11px var(--fm); letter-spacing:.5px; }
+@keyframes entra { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
+
+/* Cierre */
+.cta { margin-top:18px; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px 20px; padding:16px 20px; border-radius:16px; background:var(--ink); color:#E6ECF2; }
+.cta p { margin:0; font-size:15px; }
+.cta p b { display:block; color:#fff; font:800 22px/1.2 var(--fd); text-transform:uppercase; }
+.btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:12px 20px; border-radius:12px; background:#fff; color:var(--ink); text-decoration:none; font:800 15px var(--fd); text-transform:uppercase; letter-spacing:.5px; transition:transform .2s ease, box-shadow .2s ease; }
+.btn:hover { transform:translateY(-2px); box-shadow:0 12px 24px rgba(0,0,0,.24); }
+
+/* Ficha del proyecto */
+.velo { position:absolute; inset:0; background:rgba(20,33,44,.62); z-index:5; }
+.ficha { position:absolute; left:50%; transform:translateX(-50%); width:calc(100% - 32px); max-width:940px; background:var(--sheet); border-radius:18px; padding:16px; z-index:6; display:grid; grid-template-columns:minmax(0,1.5fr) minmax(0,1fr); gap:18px; box-shadow:0 24px 60px rgba(0,0,0,.3); }
+.velo[hidden], .ficha[hidden] { display:none; }
+.visor { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden; background:#E4E6E9; }
+.visor > img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; }
+.visor .pie { position:absolute; left:10px; bottom:10px; padding:4px 9px; border-radius:6px; background:rgba(20,33,44,.78); color:#fff; font:500 12px var(--fm); }
+.flecha { position:absolute; top:50%; transform:translateY(-50%); width:38px; height:38px; border:0; border-radius:50%; background:rgba(255,255,255,.9); color:var(--ink); cursor:pointer; font-size:17px; }
+.flecha.ant { left:10px; } .flecha.sig { right:10px; }
+.minis { display:flex; gap:6px; margin-top:8px; overflow-x:auto; padding:2px; }
+.minis button { flex:none; width:58px; height:44px; padding:0; border:2px solid transparent; border-radius:7px; overflow:hidden; background:none; cursor:pointer; opacity:.7; }
+.minis button[aria-current="true"] { border-color:var(--ink); opacity:1; }
+.minis img { width:100%; height:100%; object-fit:cover; display:block; }
+.ficha h3 { margin:2px 44px 2px 0; font:800 27px/1.05 var(--fd); text-transform:uppercase; }
+.ficha .lugar { margin:0; color:var(--muted); font-size:15px; }
+.ficha .desc { margin:10px 0 0; color:var(--muted); font-size:15px; }
+.ficha dl { margin:12px 0 14px; display:grid; gap:0; }
+.ficha dl div { display:flex; justify-content:space-between; gap:12px; padding:6px 0; border-bottom:1px solid var(--rule); font-size:14px; }
+.ficha dt { color:var(--muted); } .ficha dd { margin:0; font-weight:500; text-align:right; }
+.ficha .btn { background:var(--ink); color:#fff; width:100%; }
+.cerrar { position:absolute; top:12px; right:12px; width:38px; height:38px; border-radius:50%; border:1.5px solid var(--slate); background:var(--sheet); cursor:pointer; font-size:17px; line-height:1; z-index:2; }
+.cerrar:hover { background:var(--ink); border-color:var(--ink); color:#fff; }
+
+/* Comparar render y obra */
+.comparar { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden; background:#E4E6E9; margin-bottom:12px; --corte:50%; }
+.comparar img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.comparar .arriba { clip-path:inset(0 calc(100% - var(--corte)) 0 0); }
+.comparar i { position:absolute; top:0; bottom:0; left:var(--corte); width:3px; margin-left:-1.5px; background:#fff; pointer-events:none; }
+.comparar span { position:absolute; bottom:10px; padding:3px 8px; border-radius:6px; background:rgba(20,33,44,.78); color:#fff; font:500 11px var(--fm); pointer-events:none; }
+.comparar .izq { left:10px; } .comparar .der { right:10px; }
+.comparar input { position:absolute; inset:0; width:100%; height:100%; margin:0; opacity:0; cursor:ew-resize; }
+
+@media (prefers-reduced-motion:reduce) { *, *::before, *::after { transition-duration:.01ms !important; animation-duration:.01ms !important; } }
+
+@media (max-width:860px) {
+  .grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .ficha { grid-template-columns:minmax(0,1fr); }
+}
+@media (max-width:560px) {
+  .wrap { padding:18px 14px; }
+  .cifras { gap:6px; margin-bottom:16px; }
+  .cifras li { padding:8px 10px; }
+  .cifras b { font-size:22px; }
+  .cifras span { display:block; font-size:12px; line-height:1.25; }
+  .filtros button { padding:7px 12px; font-size:12px; letter-spacing:.5px; }
+  .grid { grid-template-columns:minmax(0,1fr); gap:10px; }
+  .card, .card.grande { grid-column:auto; height:230px; }
+  .ficha { width:calc(100% - 16px); padding:10px; gap:12px; }
+  .ficha h3 { font-size:23px; }
+  .cerrar { top:16px; right:16px; }
+  .cta { padding:14px 16px; }
+  .btn { width:100%; }
+}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <ul class="cifras">
+    <li><b>+10</b><span>años de experiencia</span></li>
+    <li><b>55</b><span>casas entregadas</span></li>
+    <li><b>5,230 m²</b><span>construidos</span></li>
+  </ul>
+  <div class="filtros" id="filtros" role="group" aria-label="Filtrar proyectos"></div>
+  <div class="grid" id="grid"></div>
+  <div class="cta">
+    <p><b>¿Quieres un proyecto así?</b>Cuéntanos qué tienes en mente y lo platicamos.</p>
+    <a class="btn" target="_blank" rel="noopener" href="https://wa.me/523111455359?text=Hola%2C%20vi%20su%20portafolio%20y%20me%20gustar%C3%ADa%20platicar%20sobre%20un%20proyecto.">Hablemos por WhatsApp →</a>
+  </div>
+</main>
+<div class="velo" id="velo" hidden></div>
+<section class="ficha" id="ficha" role="dialog" aria-modal="true" aria-labelledby="ficha-titulo" hidden>
+  <button class="cerrar" id="cerrar" aria-label="Cerrar ficha">✕</button>
+  <div>
+    <div id="comparar"></div>
+    <div class="visor">
+      <img id="foto" alt="">
+      <span class="pie" id="pie"></span>
+      <button class="flecha ant" id="ant" aria-label="Foto anterior">←</button>
+      <button class="flecha sig" id="sig" aria-label="Foto siguiente">→</button>
+    </div>
+    <div class="minis" id="minis"></div>
+  </div>
+  <div>
+    <h3 id="ficha-titulo"></h3>
+    <p class="lugar" id="lugar"></p>
+    <p class="desc" id="desc"></p>
+    <dl id="datos"></dl>
+    <a class="btn" id="ficha-wa" target="_blank" rel="noopener">Quiero un proyecto así →</a>
+  </div>
+</section>
+<script>
+(() => {
+  const M = (id, w) => `https://static.wixstatic.com/media/${id}/v1/fit/w_${w},h_${w},q_85/foto.jpg`;
+
+  // Para agregar o cambiar proyectos, edita solo esta lista.
+  // estado: "Render" o "Obra terminada". Los datos que no se llenen no aparecen en la ficha.
+  // comparar (opcional): { render: "id de la imagen", obra: "id de la imagen" } muestra la barra deslizable.
+  const PROYECTOS = [
+    { nombre: "Casa La Morena", tipo: "Casas", estado: "Render",
+      lugar: "Coto La Morena, Hacienda El Rincón",
+      desc: "Residencia de dos niveles, diseñada y construida por Innovación Arquitectura Estudio.",
+      datos: { "Terreno": "144 m² (8 × 18 m)", "Construcción": "249 m²", "Recámaras": "3", "Baños": "2", "Cochera": "2 autos" },
+      fotos: [
+        ["f47f29_1898bd6b47ff43d38efeded03a51801f~mv2.png", "Fachada"],
+        ["f47f29_09ecb2daf2b24be7abc09a384e404f56~mv2.png", "Cocina y comedor"],
+        ["f47f29_8e2a9e70295243e5bdaa46c415148555~mv2.png", "Recámara principal"],
+        ["f47f29_4fa5faf0ca6444c588bf5658e980836a~mv2.png", "Baño"],
+        ["f47f29_c103231358504991b8f08910dcff368e~mv2.png", "Tocador"],
+        ["f47f29_016147fbd84e4e86a5a81ab506d5b0db~mv2.jpg", "Planta baja · 80.23 m²"],
+        ["f47f29_3b9d59af309240e8aa8bf0d70f2aecb2~mv2.jpg", "Planta alta · 101.27 m²"],
+      ] },
+    { nombre: "Edificio comercial", tipo: "Edificios", estado: "Obra terminada",
+      fotos: [["f47f29_02a5dc7d372843bcb9146b744b8e8bb1~mv2.jpg", "Fachada"]] },
+    // PENDIENTE: nombre, ubicación, m² y más fotos de los siguientes proyectos
+    { nombre: "Casa Hacienda del Rincón", tipo: "Casas", estado: "Render",
+      lugar: "Hacienda del Rincón, Ocotlán", datos: { "Año": "2020" },
+      fotos: [["f47f29_c2871fa4cdbf4cfb8d40131d9dfc1817~mv2.jpg", "Fachada"]] },
+    { nombre: "Residencia contemporánea", tipo: "Casas", estado: "Render",
+      fotos: [["f47f29_aee6b16f2cc44ea49110e042407955ce~mv2.jpg", "Fachada"]] },
+    { nombre: "Casa 67", tipo: "Casas", estado: "Render",
+      fotos: [["f47f29_77c2f3e69d9643afbcc0b742de8c9786~mv2.jpg", "Fachada"]] },
+    { nombre: "Casa 55", tipo: "Casas", estado: "Render",
+      fotos: [["f47f29_ba47001759d54036b2fb21e0be63c3bf~mv2.jpg", "Fachada"]] },
+    { nombre: "Edificio de esquina", tipo: "Edificios", estado: "Render",
+      fotos: [["f47f29_9354df3bed0940b0b305ad5173daeac9~mv2.jpg", "Fachada de cristal"]] },
+    { nombre: "Cocina con isla", tipo: "Interiores", estado: "Render",
+      fotos: [["f47f29_81d5db6d086b42bab4897f267c759a96~mv2.jpg", "Cocina"]] },
+  ];
+
+  const $ = (id) => document.getElementById(id);
+  const grid = $("grid"), filtros = $("filtros"), ficha = $("ficha"), velo = $("velo");
+  const CATEGORIAS = ["Todos", ...new Set(PROYECTOS.map((p) => p.tipo))];
+  let filtro = "Todos", abierto = null, foto = 0, origen = null;
+
+  CATEGORIAS.forEach((c) => {
+    const b = document.createElement("button");
+    b.textContent = c;
+    b.setAttribute("aria-pressed", c === filtro);
+    b.addEventListener("click", () => {
+      filtro = c;
+      [...filtros.children].forEach((x) => x.setAttribute("aria-pressed", x === b));
+      pintar();
+    });
+    filtros.appendChild(b);
+  });
+
+  function pintar() {
+    grid.innerHTML = "";
+    // Los elegidos pasan al frente y el resto se atenúa: así la pieza no cambia de altura ni deja huecos en el bloque de Wix
+    const elegido = (p) => filtro === "Todos" || p.tipo === filtro;
+    [...PROYECTOS].sort((a, b) => elegido(b) - elegido(a)).forEach((p, i) => {
+      const b = document.createElement("button");
+      b.className = "card" + (i === 0 ? " grande" : "") + (elegido(p) ? "" : " otro");
+      b.style.animationDelay = i * 0.05 + "s";
+      b.setAttribute("aria-label", "Ver ficha de " + p.nombre);
+      b.innerHTML = `<img loading="lazy" src="${M(p.fotos[0][0], 800)}" alt="${p.nombre}"><span class="chip">${p.estado}</span>
+        <span class="capa"><h3>${p.nombre}</h3><p>${p.lugar || p.tipo}</p></span>`;
+      b.addEventListener("click", () => abrir(p, b));
+      grid.appendChild(b);
+    });
+  }
+
+  function verFoto(i) {
+    const p = abierto, n = p.fotos.length;
+    foto = (i + n) % n;
+    $("foto").src = M(p.fotos[foto][0], 1200);
+    $("foto").alt = p.nombre + ": " + p.fotos[foto][1];
+    $("pie").textContent = p.fotos[foto][1];
+    [...$("minis").children].forEach((b, k) => b.setAttribute("aria-current", k === foto));
+  }
+
+  function abrir(p, tarjeta) {
+    abierto = p; origen = tarjeta;
+    $("ficha-titulo").textContent = p.nombre;
+    $("lugar").textContent = p.lugar || p.tipo;
+    $("desc").textContent = p.desc || "";
+    $("desc").hidden = !p.desc;
+    $("datos").innerHTML = Object.entries(p.datos || {}).map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join("");
+    $("ficha-wa").href = "https://wa.me/523111455359?text=" + encodeURIComponent("Hola, vi el proyecto " + p.nombre + " en su portafolio y me gustaría algo así.");
+
+    $("comparar").innerHTML = p.comparar ? `<div class="comparar"><img src="${M(p.comparar.obra, 1200)}" alt="Obra terminada de ${p.nombre}">
+      <img class="arriba" src="${M(p.comparar.render, 1200)}" alt="Render de ${p.nombre}"><i></i><span class="izq">Render</span><span class="der">Obra</span>
+      <input type="range" min="0" max="100" value="50" aria-label="Comparar render y obra terminada"></div>` : "";
+    const barra = $("comparar").querySelector("input");
+    if (barra) barra.addEventListener("input", () => barra.parentNode.style.setProperty("--corte", barra.value + "%"));
+
+    const varias = p.fotos.length > 1;
+    $("minis").hidden = !varias; $("ant").hidden = !varias; $("sig").hidden = !varias;
+    $("minis").innerHTML = "";
+    if (varias) p.fotos.forEach((f, i) => {
+      const b = document.createElement("button");
+      b.setAttribute("aria-label", "Ver " + f[1]);
+      b.innerHTML = `<img loading="lazy" src="${M(f[0], 160)}" alt="">`;
+      b.addEventListener("click", () => verFoto(i));
+      $("minis").appendChild(b);
+    });
+    verFoto(0);
+
+    velo.hidden = false; ficha.hidden = false;
+    // El bloque de Wix no se desplaza por dentro: la ficha aparece a la altura de la tarjeta tocada, sin salirse de la pieza
+    const alto = document.documentElement.scrollHeight, y = tarjeta.getBoundingClientRect().top + window.scrollY;
+    ficha.style.top = Math.max(8, Math.min(y, alto - ficha.offsetHeight - 8)) + "px";
+    $("cerrar").focus({ preventScroll: true });
+  }
+
+  function cerrar() {
+    if (!abierto) return;
+    abierto = null; velo.hidden = true; ficha.hidden = true;
+    if (origen) origen.focus({ preventScroll: true });
+  }
+  $("cerrar").addEventListener("click", cerrar);
+  velo.addEventListener("click", cerrar);
+  $("ant").addEventListener("click", () => verFoto(foto - 1));
+  $("sig").addEventListener("click", () => verFoto(foto + 1));
+  window.addEventListener("keydown", (e) => {
+    if (!abierto) return;
+    if (e.key === "Escape") cerrar();
+    if (e.target.type === "range") return;
+    if (e.key === "ArrowRight") verFoto(foto + 1);
+    if (e.key === "ArrowLeft") verFoto(foto - 1);
+  });
+
+  pintar();
+})();
+</script>
+</body>
+</html>
