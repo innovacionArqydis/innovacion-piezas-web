@@ -171,6 +171,19 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline:3px solid v
         ["img/torre-servitel-estructura.jpg", "Estructura · 2020"],
         ["img/torre-servitel-interior.jpg", "Interior en proceso"],
       ] },
+    { nombre: "Wings Town", tipo: "Interiores", estado: "Obra terminada",
+      lugar: "Plaza Malecón, Ocotlán",
+      desc: "Diseño interior de un restaurante bar, del render a la obra terminada.",
+      datos: { "Año": "2016", "Uso": "Restaurante bar", "Alcance": "Diseño interior" },
+      fotos: [
+        ["img/wings-salon.jpg", "Salón"],
+        ["img/wings-render.jpg", "Render"],
+        ["img/wings-barra.jpg", "Barra"],
+        ["img/wings-muro.jpg", "Muro principal"],
+        ["img/wings-letras.jpg", "Letras luminosas"],
+        ["img/wings-terraza.jpg", "Terraza"],
+        ["img/wings-lampara.jpg", "Detalle de iluminación"],
+      ] },
     // PENDIENTE: más fotos de los siguientes proyectos
     { nombre: "Casa Calandria", tipo: "Casas", estado: "Render",
       lugar: "Hacienda El Rincón, Ocotlán", datos: { "Año": "2020" },
@@ -213,7 +226,7 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline:3px solid v
     const elegido = (p) => filtro === "Todos" || p.tipo === filtro;
     [...PROYECTOS].sort((a, b) => elegido(b) - elegido(a)).forEach((p, i) => {
       const b = document.createElement("button");
-      b.className = "card" + (i === 0 ? " grande" : "") + (elegido(p) ? "" : " otro");
+      b.className = "card" + (i === 0 && PROYECTOS.length % 3 === 2 ? " grande" : "") + (elegido(p) ? "" : " otro");
       b.style.animationDelay = i * 0.05 + "s";
       b.setAttribute("aria-label", "Ver ficha de " + p.nombre);
       b.innerHTML = `<img loading="lazy" src="${M(p.fotos[0][0], 800)}" alt="${p.nombre}"><span class="chip">${p.estado}</span>
