@@ -6,6 +6,7 @@ Se publican con GitHub Pages en `https://innovacionarqydis.github.io/innovacion-
 | Pieza | Archivo | Altura computadora | Altura celular |
 |---|---|---|---|
 | Encabezado animado | `encabezado.html` | 120 px | 160 px |
+| Pie de página | `pie.html` | 340 px | 700 px |
 | Dos caminos (botones) | `caminos.html` | 120 px | 280 px |
 | Trayectoria (Nosotros) | `trayectoria.html` | 380 px | 500 px |
 | Ubicación y horario (Nosotros) | `ubicacion.html` | 400 px | 720 px |
