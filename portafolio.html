@@ -141,7 +141,7 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline:3px solid v
 </section>
 <script>
 (() => {
-  const M = (id, w) => `https://static.wixstatic.com/media/${id}/v1/fit/w_${w},h_${w},q_85/foto.jpg`;
+  const M = (id, w) => id.startsWith("img/") ? id : `https://static.wixstatic.com/media/${id}/v1/fit/w_${w},h_${w},q_85/foto.jpg`;
 
   // Para agregar o cambiar proyectos, edita solo esta lista.
   // estado: "Render" o "Obra terminada". Los datos que no se llenen no aparecen en la ficha.
@@ -164,7 +164,13 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline:3px solid v
       lugar: "Ocotlán Centro",
       desc: "El primer edificio con fachada completamente de cristal en Ocotlán.",
       datos: { "Niveles": "4", "Uso": "Comercial y corporativo" },
-      fotos: [["f47f29_9354df3bed0940b0b305ad5173daeac9~mv2.jpg", "Fachada de cristal"]] },
+      fotos: [
+        ["img/torre-servitel-render.jpg", "Render · 2021"],
+        ["img/torre-servitel-exterior.jpg", "Obra terminada"],
+        ["f47f29_9354df3bed0940b0b305ad5173daeac9~mv2.jpg", "Fachada de cristal"],
+        ["img/torre-servitel-estructura.jpg", "Estructura · 2020"],
+        ["img/torre-servitel-interior.jpg", "Interior en proceso"],
+      ] },
     // PENDIENTE: más fotos de los siguientes proyectos
     { nombre: "Casa Calandria", tipo: "Casas", estado: "Render",
       lugar: "Hacienda El Rincón, Ocotlán", datos: { "Año": "2020" },
